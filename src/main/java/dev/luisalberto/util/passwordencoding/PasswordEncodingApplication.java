@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PasswordencodingApplication {
+public class PasswordEncodingApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PasswordencodingApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PasswordEncodingApplication.class, args);
+    }
 
 }

@@ -1,0 +1,9 @@
+# Spring
+spring:
+    main:
+        banner-mode: "off"
+
+# Logging
+logging:
+    level:
+        root: OFF
