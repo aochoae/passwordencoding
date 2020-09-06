@@ -1,3 +1,9 @@
-java -jar passwordencoding-0.0.1-SNAPSHOT.jar --password=qwerty
+Usage: java -jar passwordencoding-0.0.1-SNAPSHOT.jar --password="qwerty"
+       java -jar passwordencoding-0.0.1-SNAPSHOT.jar --password="qwerty" [--algorithm=bcrypt]
 
-java -jar passwordencoding-0.0.1-SNAPSHOT.jar --password=qwerty --algorithm=bcrypt
+Arguments:
+       --password="PASSWORD"
+           The raw password to encode.
+
+       --algorithm=[bcrypt|argon2|pbkdf2|scrypt]
+           Algorithm for encoding the password.

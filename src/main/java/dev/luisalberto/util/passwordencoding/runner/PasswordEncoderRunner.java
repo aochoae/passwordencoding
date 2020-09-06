@@ -36,11 +36,11 @@ public class PasswordEncoderRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        if (args.containsOption("help")) {
+        if (args.containsOption("help") || args.getOptionNames().isEmpty()) {
             help();
+        } else {
+            passwordEncoding(args);
         }
-
-        passwordEncoding(args);
     }
 
     private void passwordEncoding(ApplicationArguments args) {
@@ -84,24 +84,20 @@ public class PasswordEncoderRunner implements ApplicationRunner {
 
         Set<String> options = args.getOptionNames();
 
-        String algorithm = "";
-
         if (options.contains("algorithm")) {
 
             if (args.getOptionValues("algorithm").isEmpty()) {
-                algorithm = "bcrypt";
+                return "bcrypt";
             }
 
             Optional<String> container = Optional.of(args.getOptionValues("algorithm").get(0)).filter(arg -> {
                 return !arg.isBlank();
             });
 
-            algorithm = container.orElse("bcrypt");
-        } else {
-            algorithm = "bcrypt";
+            return container.orElse("bcrypt");
         }
 
-        return algorithm;
+        return "bcrypt";
     }
 
     private void help() {
@@ -113,7 +109,5 @@ public class PasswordEncoderRunner implements ApplicationRunner {
                 .collect(Collectors.joining(System.lineSeparator()));
 
         System.out.println(help);
-
-        System.exit(0);
     }
 }
