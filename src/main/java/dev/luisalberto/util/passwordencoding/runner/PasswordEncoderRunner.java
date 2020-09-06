@@ -19,6 +19,8 @@ package dev.luisalberto.util.passwordencoding.runner;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.boot.ApplicationArguments;
@@ -45,7 +47,7 @@ public class PasswordEncoderRunner implements ApplicationRunner {
 
         try {
 
-            PasswordEncoding passwordEncoding = new PasswordEncoding(args);
+            PasswordEncoding passwordEncoding = new PasswordEncoding(getPassword(args), getAlgorithm(args));
 
             System.out.println(passwordEncoding.getRawPassword());
             System.out.println(passwordEncoding.getEncodedPassword());
@@ -55,10 +57,56 @@ public class PasswordEncoderRunner implements ApplicationRunner {
         }
     }
 
+    private String getPassword(ApplicationArguments args) {
+
+        Set<String> options = args.getOptionNames();
+
+        if (options.contains("password")) {
+
+            if (args.getOptionValues("password").isEmpty()) {
+                throw new PasswordEncodingException("You must enter a password.");
+            }
+
+            Optional<String> container = Optional.of(args.getOptionValues("password").get(0)).filter(arg -> {
+                return !arg.isBlank();
+            });
+
+            return container.orElseThrow(() -> {
+                throw new PasswordEncodingException("You must enter a password.");
+            });
+
+        } else {
+            throw new PasswordEncodingException("You must enter a password.");
+        }
+    }
+
+    private String getAlgorithm(ApplicationArguments args) {
+
+        Set<String> options = args.getOptionNames();
+
+        String algorithm = "";
+
+        if (options.contains("algorithm")) {
+
+            if (args.getOptionValues("algorithm").isEmpty()) {
+                algorithm = "bcrypt";
+            }
+
+            Optional<String> container = Optional.of(args.getOptionValues("algorithm").get(0)).filter(arg -> {
+                return !arg.isBlank();
+            });
+
+            algorithm = container.orElse("bcrypt");
+        } else {
+            algorithm = "bcrypt";
+        }
+
+        return algorithm;
+    }
+
     private void help() {
 
-        InputStream inputStream = getClass().getClassLoader()
-                .getResourceAsStream("help");
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("help");
 
         String help = new BufferedReader(new InputStreamReader(inputStream))
                 .lines()

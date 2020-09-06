@@ -16,12 +16,10 @@
 
 package dev.luisalberto.util.passwordencoding.crypto;
 
-import org.springframework.boot.ApplicationArguments;
-
 public class PasswordEncoding extends AbstractPasswordEncoding {
 
-    public PasswordEncoding(ApplicationArguments args) {
-        super(args);
+    public PasswordEncoding(String rawPassword, String algorithm) {
+        super(rawPassword, algorithm);
     }
 
     public String getRawPassword() {
