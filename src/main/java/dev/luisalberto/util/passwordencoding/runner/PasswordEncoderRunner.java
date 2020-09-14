@@ -67,17 +67,16 @@ public class PasswordEncoderRunner implements ApplicationRunner {
                 throw new PasswordEncodingException("You must enter a password.");
             }
 
-            Optional<String> container = Optional.of(args.getOptionValues("password").get(0)).filter(arg -> {
-                return !arg.isBlank();
-            });
+            Optional<String> container = Optional.of(args.getOptionValues("password").get(0))
+                .map(String::trim)
+                .filter(arg -> !arg.isEmpty());
 
             return container.orElseThrow(() -> {
                 throw new PasswordEncodingException("You must enter a password.");
             });
-
-        } else {
-            throw new PasswordEncodingException("You must enter a password.");
         }
+
+        throw new PasswordEncodingException("You must enter a password.");
     }
 
     private String getAlgorithm(ApplicationArguments args) {
@@ -90,9 +89,9 @@ public class PasswordEncoderRunner implements ApplicationRunner {
                 return "bcrypt";
             }
 
-            Optional<String> container = Optional.of(args.getOptionValues("algorithm").get(0)).filter(arg -> {
-                return !arg.isBlank();
-            });
+            Optional<String> container = Optional.of(args.getOptionValues("algorithm").get(0))
+            	.map(String::trim)
+                .filter(arg -> !arg.isEmpty());
 
             return container.orElse("bcrypt");
         }
