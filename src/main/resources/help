@@ -3,7 +3,7 @@ Usage: java -jar passwordencoding.jar --password="qwerty"
 
 Arguments:
        --password="PASSWORD"
-           The raw password to encode.
+           The raw password to encode. Mandatory argument. 
 
        --algorithm=[bcrypt|argon2|pbkdf2|scrypt]
-           Algorithm for encoding the password.
+           Algorithm for encoding the password. Default algorithm is bcrypt.
