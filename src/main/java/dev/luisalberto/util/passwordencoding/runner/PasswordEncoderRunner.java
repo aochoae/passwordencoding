@@ -28,8 +28,11 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import dev.luisalberto.util.passwordencoding.crypto.PasswordEncoding;
-import dev.luisalberto.util.passwordencoding.exception.PasswordEncodingException;
+import dev.luisalberto.util.passwordencoding.exception.PasswordArgumentException;
 
+/**
+ * @author Luis A. Ochoa
+ */
 @Component
 public class PasswordEncoderRunner implements ApplicationRunner {
 
@@ -43,6 +46,11 @@ public class PasswordEncoderRunner implements ApplicationRunner {
         }
     }
 
+    /**
+     * Working...
+     * 
+     * @param args
+     */
     private void passwordEncoding(ApplicationArguments args) {
 
         try {
@@ -52,11 +60,17 @@ public class PasswordEncoderRunner implements ApplicationRunner {
             System.out.println(passwordEncoding.getRawPassword());
             System.out.println(passwordEncoding.getEncodedPassword());
 
-        } catch (PasswordEncodingException e) {
+        } catch (PasswordArgumentException e) {
             System.err.println(e.getLocalizedMessage());
         }
     }
 
+    /**
+     * Retrieve the value of the <code>--password</code> param.
+     * 
+     * @param args
+     * @return
+     */
     private String getPassword(ApplicationArguments args) {
 
         Set<String> options = args.getOptionNames();
@@ -64,21 +78,25 @@ public class PasswordEncoderRunner implements ApplicationRunner {
         if (options.contains("password")) {
 
             if (args.getOptionValues("password").isEmpty()) {
-                throw new PasswordEncodingException("You must enter a password.");
+                throw new PasswordArgumentException();
             }
 
             Optional<String> container = Optional.of(args.getOptionValues("password").get(0))
                 .map(String::trim)
                 .filter(arg -> !arg.isEmpty());
 
-            return container.orElseThrow(() -> {
-                throw new PasswordEncodingException("You must enter a password.");
-            });
+            return container.orElseThrow(PasswordArgumentException::new);
         }
 
-        throw new PasswordEncodingException("You must enter a password.");
+        throw new PasswordArgumentException();
     }
 
+    /**
+     * Retrieve the value of the <code>--algorithm</code> param.
+     * 
+     * @param args
+     * @return
+     */
     private String getAlgorithm(ApplicationArguments args) {
 
         Set<String> options = args.getOptionNames();
@@ -99,6 +117,9 @@ public class PasswordEncoderRunner implements ApplicationRunner {
         return "bcrypt";
     }
 
+    /**
+     * Help!
+     */
     private void help() {
 
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("help");

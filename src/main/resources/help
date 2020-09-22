@@ -1,5 +1,5 @@
-Usage: java -jar passwordencoding-0.0.1-SNAPSHOT.jar --password="qwerty"
-       java -jar passwordencoding-0.0.1-SNAPSHOT.jar --password="qwerty" [--algorithm=bcrypt]
+Usage: java -jar passwordencoding.jar --password="qwerty"
+       java -jar passwordencoding.jar --password="qwerty" [--algorithm=bcrypt]
 
 Arguments:
        --password="PASSWORD"

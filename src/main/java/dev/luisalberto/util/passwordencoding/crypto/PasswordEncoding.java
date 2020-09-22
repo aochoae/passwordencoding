@@ -16,17 +16,78 @@
 
 package dev.luisalberto.util.passwordencoding.crypto;
 
-public class PasswordEncoding extends AbstractPasswordEncoding {
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
+import dev.luisalberto.util.passwordencoding.exception.AlgorithmArgumentException;
+
+/**
+ * @author Luis A. Ochoa
+ */
+public class PasswordEncoding {
+
+    private String rawPassword = "";
+
+    private String algorithm = "";
+
+    /**
+     * Creates a new instance.
+     * 
+     * @param rawPassword The raw password to encode
+     * @param algorithm Id for password encoder
+     */
     public PasswordEncoding(String rawPassword, String algorithm) {
-        super(rawPassword, algorithm);
+        this.rawPassword =  rawPassword;
+        this.algorithm = algorithm;
     }
 
+    /**
+     * Retrives the password in plain text.
+     * 
+     * @return The raw password.
+     */
     public String getRawPassword() {
         return rawPassword;
     }
 
+    /**
+     * Retrives the encrypted password.
+     * 
+     * @return The encrypted password.
+     */
     public String getEncodedPassword() {
         return getPasswordEncoderInstance().encode(rawPassword);
+    }
+
+    /**
+     * Retrieve the implementation selected by passing the --algorithm param.
+     * 
+     * @return PasswordEncoder implementation.
+     */
+    private PasswordEncoder getPasswordEncoderInstance() {
+
+        PasswordEncoder passwordEncoder = null;
+
+        switch (algorithm) {
+        case "argon2":
+            passwordEncoder = new Argon2PasswordEncoder();
+            break;
+        case "bcrypt":
+            passwordEncoder = new BCryptPasswordEncoder();
+            break;
+        case "pbkdf2":
+            passwordEncoder = new Pbkdf2PasswordEncoder();
+            break;
+        case "scrypt":
+            passwordEncoder = new SCryptPasswordEncoder();
+            break;
+        default:
+            throw new AlgorithmArgumentException();
+        }
+
+        return passwordEncoder;
     }
 }

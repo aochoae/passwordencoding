@@ -19,11 +19,15 @@ package dev.luisalberto.util.passwordencoding;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Application - main class
+ * 
+ * @author Luis A. Ochoa
+ */
 @SpringBootApplication
 public class PasswordEncodingApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PasswordEncodingApplication.class, args);
     }
-
 }
