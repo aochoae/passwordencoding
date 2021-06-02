@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Luis A. Ochoa
+ * Copyright 2020-2021 Luis A. Ochoa
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,14 +31,5 @@ public class PasswordArgumentException extends RuntimeException {
      */
     public PasswordArgumentException() {
         super("You must enter a password.");
-    }
-
-    /**
-     * Constructs a PasswordArgumentException exception.
-     * 
-     * @param message The detail message.
-     */
-    public PasswordArgumentException(String message) {
-        super(message);
     }
 }

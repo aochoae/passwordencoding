@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Luis A. Ochoa
+ * Copyright 2020-2021 Luis A. Ochoa
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import dev.luisalberto.util.passwordencoding.exception.PasswordArgumentException
 public class PasswordEncoderRunner implements ApplicationRunner {
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
 
         if (args.containsOption("help") || args.getOptionNames().isEmpty()) {
             help();
@@ -48,7 +48,7 @@ public class PasswordEncoderRunner implements ApplicationRunner {
 
     /**
      * Working...
-     * 
+     *
      * @param args
      */
     private void passwordEncoding(ApplicationArguments args) {
@@ -67,7 +67,7 @@ public class PasswordEncoderRunner implements ApplicationRunner {
 
     /**
      * Retrieve the value of the <code>--password</code> param.
-     * 
+     *
      * @param args
      * @return
      */
@@ -93,7 +93,7 @@ public class PasswordEncoderRunner implements ApplicationRunner {
 
     /**
      * Retrieve the value of the <code>--algorithm</code> param.
-     * 
+     *
      * @param args
      * @return
      */
@@ -104,17 +104,17 @@ public class PasswordEncoderRunner implements ApplicationRunner {
         if (options.contains("algorithm")) {
 
             if (args.getOptionValues("algorithm").isEmpty()) {
-                return "bcrypt";
+                return "pbkdf2";
             }
 
             Optional<String> container = Optional.of(args.getOptionValues("algorithm").get(0))
             	.map(String::trim)
                 .filter(arg -> !arg.isEmpty());
 
-            return container.orElse("bcrypt");
+            return container.orElse("pbkdf2");
         }
 
-        return "bcrypt";
+        return "pbkdf2";
     }
 
     /**
@@ -123,6 +123,8 @@ public class PasswordEncoderRunner implements ApplicationRunner {
     private void help() {
 
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("help");
+
+        assert inputStream != null;
 
         String help = new BufferedReader(new InputStreamReader(inputStream))
                 .lines()

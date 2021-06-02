@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Luis A. Ochoa
+ * Copyright 2020-2021 Luis A. Ochoa
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,13 +29,13 @@ import dev.luisalberto.util.passwordencoding.exception.AlgorithmArgumentExceptio
  */
 public class PasswordEncoding {
 
-    private String rawPassword = "";
+    private final String rawPassword;
 
-    private String algorithm = "";
+    private final String algorithm;
 
     /**
      * Creates a new instance.
-     * 
+     *
      * @param rawPassword The raw password to encode
      * @param algorithm Id for password encoder
      */
@@ -45,8 +45,8 @@ public class PasswordEncoding {
     }
 
     /**
-     * Retrives the password in plain text.
-     * 
+     * Retrieves the password in plain text.
+     *
      * @return The raw password.
      */
     public String getRawPassword() {
@@ -54,8 +54,8 @@ public class PasswordEncoding {
     }
 
     /**
-     * Retrives the encrypted password.
-     * 
+     * Retrieves the encrypted password.
+     *
      * @return The encrypted password.
      */
     public String getEncodedPassword() {
@@ -64,12 +64,12 @@ public class PasswordEncoding {
 
     /**
      * Retrieve the implementation selected by passing the --algorithm param.
-     * 
+     *
      * @return PasswordEncoder implementation.
      */
     private PasswordEncoder getPasswordEncoderInstance() {
 
-        PasswordEncoder passwordEncoder = null;
+        PasswordEncoder passwordEncoder;
 
         switch (algorithm) {
         case "argon2":
